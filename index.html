@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Srikanth Lingam — Paid Social Analyst &amp; Performance Marketer</title>
+<meta name="description" content="Srikanth Lingam — Paid Social Analyst. 4+ years engineering full-funnel performance across Meta, LinkedIn, Snapchat, Pinterest and Reddit for EMEA brands.">
+<meta property="og:title" content="Srikanth Lingam — I don't run ads. I engineer attention.">
+<meta property="og:description" content="Paid Social Analyst — full-funnel performance marketing across Meta, LinkedIn, Snapchat, Pinterest, Reddit.">
+<meta property="og:type" content="website">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --void:#0A0B0E;
+    --panel:#14161B;
+    --panel-2:#1B1E25;
+    --ink:#F3F4F6;
+    --muted:#8B8F9C;
+    --line:#232630;
+    --indigo:#6C6FF0;
+    --cyan:#43E6D0;
+    --font-display:'Space Grotesk',sans-serif;
+    --font-body:'Inter',sans-serif;
+    --font-mono:'JetBrains Mono',monospace;
+  }
+  *{box-sizing:border-box;margin:0;padding:0;}
+  html{scroll-behavior:smooth;}
+  body{
+    background:var(--void);
+    color:var(--ink);
+    font-family:var(--font-body);
+    overflow-x:hidden;
+    cursor:none;
+  }
+  ::selection{background:var(--indigo);color:var(--void);}
+  a{color:inherit;text-decoration:none;}
+  .container{max-width:1180px;margin:0 auto;padding:0 32px;}
+  section{position:relative;padding:160px 0;}
+  @media(max-width:768px){section{padding:100px 0;} .container{padding:0 22px;}}
+
+  /* ---------- custom cursor ---------- */
+  #cursor{position:fixed;top:0;left:0;width:10px;height:10px;border-radius:50%;background:var(--cyan);pointer-events:none;z-index:9999;transform:translate(-50%,-50%);mix-blend-mode:difference;transition:width .2s,height .2s;}
+  #cursor.big{width:44px;height:44px;background:transparent;border:1px solid var(--cyan);}
+  @media(max-width:900px){#cursor{display:none;} body{cursor:auto;}}
+
+  /* ---------- pulse line (signature element) ---------- */
+  #pulse-wrap{position:fixed;left:0;top:0;bottom:0;width:64px;z-index:60;display:flex;align-items:center;justify-content:center;pointer-events:none;}
+  #pulse-wrap svg{height:100%;width:64px;overflow:visible;}
+  #pulse-path{fill:none;stroke:url(#pulseGrad);stroke-width:1.4;filter:drop-shadow(0 0 6px rgba(67,230,208,.5));}
+  #pulse-progress{fill:none;stroke:var(--cyan);stroke-width:2;stroke-linecap:round;filter:drop-shadow(0 0 8px rgba(67,230,208,.9));}
+  @media(max-width:768px){#pulse-wrap{display:none;}}
+
+  /* ---------- loader ---------- */
+  #loader{position:fixed;inset:0;background:var(--void);z-index:9998;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;}
+  #loader .lw{font-family:var(--font-mono);font-size:13px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;}
+  #loader .lbar{width:220px;height:1px;background:var(--line);position:relative;overflow:hidden;}
+  #loader .lfill{position:absolute;left:0;top:0;height:100%;width:0%;background:linear-gradient(90deg,var(--indigo),var(--cyan));}
+  #loader .lpct{font-family:var(--font-mono);font-size:32px;color:var(--ink);}
+
+  /* ---------- nav ---------- */
+  nav{position:fixed;top:0;left:64px;right:0;z-index:50;display:flex;justify-content:space-between;align-items:center;padding:26px 40px;mix-blend-mode:difference;}
+  @media(max-width:768px){nav{left:0;padding:20px 22px;}}
+  nav .logo{font-family:var(--font-display);font-weight:600;font-size:15px;letter-spacing:.02em;}
+  nav .navlinks{display:flex;gap:34px;font-family:var(--font-mono);font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ink);}
+  nav .navlinks a{opacity:.65;transition:opacity .25s;}
+  nav .navlinks a:hover{opacity:1;}
+  @media(max-width:900px){nav .navlinks{display:none;}}
+
+  /* ---------- hero ---------- */
+  #hero{min-height:100vh;display:flex;flex-direction:column;justify-content:center;position:relative;padding-left:64px;}
+  @media(max-width:768px){#hero{padding-left:0;}}
+  #noise-canvas{position:absolute;inset:0;width:100%;height:100%;opacity:.5;pointer-events:none;}
+  .eyebrow{font-family:var(--font-mono);font-size:12px;color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;margin-bottom:28px;display:flex;align-items:center;gap:10px;}
+  .eyebrow::before{content:'';width:26px;height:1px;background:var(--cyan);}
+  .hero-line{font-family:var(--font-display);font-weight:600;line-height:1.02;letter-spacing:-.02em;overflow:hidden;}
+  .hero-line span{display:inline-block;transform:translateY(110%);}
+  .hero-line.big{font-size:clamp(38px,6.4vw,96px);}
+  .hero-line.muted{color:var(--muted);}
+  .hero-sub{margin-top:38px;max-width:560px;font-size:17px;line-height:1.7;color:var(--muted);opacity:0;}
+  .hero-meta{margin-top:56px;display:flex;gap:56px;flex-wrap:wrap;opacity:0;}
+  .hero-meta .m-label{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.1em;text-transform:uppercase;margin-bottom:8px;}
+  .hero-meta .m-val{font-family:var(--font-mono);font-size:22px;color:var(--ink);}
+  .scroll-cue{position:absolute;bottom:40px;left:64px;font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;display:flex;align-items:center;gap:12px;}
+  @media(max-width:768px){.scroll-cue{left:22px;}}
+  .scroll-cue .sline{width:1px;height:34px;background:var(--line);position:relative;overflow:hidden;}
+  .scroll-cue .sline::after{content:'';position:absolute;top:-100%;left:0;width:100%;height:100%;background:var(--cyan);animation:scrolldrop 2s infinite;}
+  @keyframes scrolldrop{0%{top:-100%;}100%{top:100%;}}
+
+  /* ---------- section heading pattern ---------- */
+  .sec-head{margin-bottom:64px;padding-left:64px;}
+  @media(max-width:768px){.sec-head{padding-left:0;}}
+  .sec-tag{font-family:var(--font-mono);font-size:12px;color:var(--cyan);letter-spacing:.2em;text-transform:uppercase;margin-bottom:16px;}
+  .sec-title{font-family:var(--font-display);font-weight:600;font-size:clamp(28px,3.6vw,48px);letter-spacing:-.01em;max-width:720px;}
+  .sec-desc{margin-top:20px;color:var(--muted);max-width:620px;font-size:16px;line-height:1.7;}
+
+  .reveal{opacity:0;transform:translateY(36px);}
+
+  /* ---------- about ---------- */
+  #about .about-grid{padding-left:64px;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:start;}
+  @media(max-width:900px){#about .about-grid{grid-template-columns:1fr;padding-left:0;gap:40px;}}
+  #about p{font-size:16px;line-height:1.8;color:var(--muted);margin-bottom:20px;}
+  #about p strong{color:var(--ink);font-weight:500;}
+  .pivot-card{background:var(--panel);border:1px solid var(--line);padding:32px;position:relative;}
+  .pivot-card::before{content:'';position:absolute;top:0;left:0;width:2px;height:100%;background:linear-gradient(180deg,var(--indigo),var(--cyan));}
+  .pivot-label{font-family:var(--font-mono);font-size:11px;color:var(--cyan);letter-spacing:.15em;text-transform:uppercase;margin-bottom:14px;}
+  .pivot-title{font-family:var(--font-display);font-size:20px;font-weight:600;margin-bottom:12px;}
+  .pivot-card p{color:var(--muted);font-size:14.5px;line-height:1.75;margin:0;}
+
+  /* ---------- experience timeline ---------- */
+  .tl-row{padding-left:64px;display:grid;grid-template-columns:180px 1fr;gap:40px;padding-bottom:56px;margin-bottom:56px;border-bottom:1px solid var(--line);position:relative;}
+  @media(max-width:768px){.tl-row{grid-template-columns:1fr;padding-left:0;gap:14px;}}
+  .tl-row:last-child{border-bottom:none;}
+  .tl-date{font-family:var(--font-mono);font-size:12.5px;color:var(--muted);letter-spacing:.05em;}
+  .tl-role{font-family:var(--font-display);font-size:23px;font-weight:600;margin-bottom:6px;}
+  .tl-co{font-family:var(--font-mono);font-size:12.5px;color:var(--cyan);text-transform:uppercase;letter-spacing:.08em;margin-bottom:22px;}
+  .tl-bullets{list-style:none;display:flex;flex-direction:column;gap:14px;max-width:680px;}
+  .tl-bullets li{font-size:15px;line-height:1.7;color:var(--muted);padding-left:20px;position:relative;}
+  .tl-bullets li::before{content:'';position:absolute;left:0;top:9px;width:6px;height:1px;background:var(--indigo);}
+  .tl-bullets li b{color:var(--ink);font-weight:500;font-family:var(--font-mono);}
+
+  /* ---------- platforms ---------- */
+  .plat-grid{padding-left:64px;display:grid;grid-template-columns:repeat(5,1fr);gap:1px;background:var(--line);border:1px solid var(--line);}
+  @media(max-width:900px){.plat-grid{grid-template-columns:repeat(3,1fr);padding-left:0;}}
+  @media(max-width:560px){.plat-grid{grid-template-columns:repeat(2,1fr);}}
+  .plat-cell{background:var(--void);padding:38px 22px;text-align:center;transition:background .3s;position:relative;overflow:hidden;}
+  .plat-cell:hover{background:var(--panel);}
+  .plat-cell .p-name{font-family:var(--font-display);font-size:16px;font-weight:600;margin-bottom:8px;}
+  .plat-cell .p-tag{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;}
+  .plat-cell::after{content:'';position:absolute;bottom:0;left:0;height:2px;width:0;background:var(--cyan);transition:width .35s;}
+  .plat-cell:hover::after{width:100%;}
+
+  /* ---------- skill constellation ---------- */
+  #skills-canvas-wrap{padding-left:64px;position:relative;height:560px;}
+  @media(max-width:900px){#skills-canvas-wrap{padding-left:0;height:auto;}}
+  .skill-tags{display:flex;flex-wrap:wrap;gap:14px;}
+  .skill-tag{border:1px solid var(--line);padding:11px 20px;font-family:var(--font-mono);font-size:13px;color:var(--muted);border-radius:100px;transition:all .3s;cursor:default;}
+  .skill-tag:hover{border-color:var(--cyan);color:var(--ink);box-shadow:0 0 22px rgba(67,230,208,.15);transform:translateY(-2px);}
+  .skill-groups{display:flex;flex-direction:column;gap:36px;}
+  .skill-group-label{font-family:var(--font-mono);font-size:11px;color:var(--indigo);letter-spacing:.15em;text-transform:uppercase;margin-bottom:16px;}
+
+  /* ---------- philosophy ---------- */
+  #philosophy{background:var(--panel);}
+  .phil-quote{padding-left:64px;font-family:var(--font-display);font-size:clamp(24px,3.2vw,42px);font-weight:500;line-height:1.35;max-width:900px;letter-spacing:-.01em;}
+  @media(max-width:768px){.phil-quote{padding-left:0;}}
+  .phil-quote .hl{color:var(--cyan);}
+  .phil-grid{padding-left:64px;margin-top:70px;display:grid;grid-template-columns:repeat(3,1fr);gap:40px;}
+  @media(max-width:900px){.phil-grid{grid-template-columns:1fr;padding-left:0;}}
+  .phil-card .num{font-family:var(--font-mono);font-size:12px;color:var(--muted);margin-bottom:14px;}
+  .phil-card h4{font-family:var(--font-display);font-size:18px;font-weight:600;margin-bottom:10px;}
+  .phil-card p{font-size:14.5px;color:var(--muted);line-height:1.7;}
+
+  /* ---------- case study ---------- */
+  .cs-label-row{padding-left:64px;display:flex;align-items:center;gap:14px;margin-bottom:20px;}
+  @media(max-width:768px){.cs-label-row{padding-left:0;}}
+  .badge{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.1em;text-transform:uppercase;padding:6px 14px;border-radius:100px;border:1px solid var(--line);color:var(--muted);}
+  .badge.real{border-color:var(--cyan);color:var(--cyan);}
+  .badge.concept{border-color:var(--indigo);color:var(--indigo);}
+  .cs-block{padding-left:64px;display:grid;grid-template-columns:220px 1fr;gap:30px;padding-bottom:44px;margin-bottom:44px;border-bottom:1px solid var(--line);}
+  @media(max-width:768px){.cs-block{grid-template-columns:1fr;padding-left:0;}}
+  .cs-block:last-child{border-bottom:none;}
+  .cs-stage{font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.15em;text-transform:uppercase;padding-top:4px;}
+  .cs-content h4{font-family:var(--font-display);font-size:19px;font-weight:600;margin-bottom:10px;}
+  .cs-content p{font-size:15px;color:var(--muted);line-height:1.75;}
+  .cs-kpis{padding-left:64px;display:grid;grid-template-columns:repeat(4,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:8px;margin-bottom:70px;}
+  @media(max-width:768px){.cs-kpis{grid-template-columns:repeat(2,1fr);padding-left:0;}}
+  .kpi-cell{background:var(--void);padding:30px 24px;}
+  .kpi-val{font-family:var(--font-mono);font-size:30px;color:var(--cyan);}
+  .kpi-lbl{font-family:var(--font-mono);font-size:10.5px;color:var(--muted);letter-spacing:.08em;text-transform:uppercase;margin-top:8px;}
+
+  /* concept project cards */
+  .concept-grid{padding-left:64px;display:grid;grid-template-columns:1fr 1fr;gap:28px;}
+  @media(max-width:900px){.concept-grid{grid-template-columns:1fr;padding-left:0;}}
+  .concept-card{background:var(--panel);border:1px solid var(--line);padding:34px;transition:border-color .3s,transform .3s;}
+  .concept-card:hover{border-color:var(--indigo);transform:translateY(-4px);}
+  .concept-card h4{font-family:var(--font-display);font-size:19px;font-weight:600;margin:14px 0 12px;}
+  .concept-card p{font-size:14.5px;color:var(--muted);line-height:1.7;margin-bottom:16px;}
+  .concept-card .cc-tags{display:flex;gap:8px;flex-wrap:wrap;}
+  .concept-card .cc-tags span{font-family:var(--font-mono);font-size:10px;color:var(--muted);border:1px solid var(--line);padding:4px 10px;border-radius:100px;}
+
+  /* ---------- certifications ---------- */
+  .cert-list{padding-left:64px;border-top:1px solid var(--line);}
+  @media(max-width:768px){.cert-list{padding-left:0;}}
+  .cert-row{display:flex;justify-content:space-between;align-items:center;padding:22px 0;border-bottom:1px solid var(--line);transition:padding-left .3s;}
+  .cert-row:hover{padding-left:14px;}
+  .cert-row .cname{font-family:var(--font-display);font-size:16px;font-weight:500;}
+  .cert-row .cissuer{font-family:var(--font-mono);font-size:11.5px;color:var(--muted);letter-spacing:.05em;text-transform:uppercase;}
+
+  /* ---------- contact / footer ---------- */
+  #contact{text-align:left;padding-left:64px;}
+  @media(max-width:768px){#contact{padding-left:0;}}
+  .contact-title{font-family:var(--font-display);font-weight:600;font-size:clamp(34px,6vw,88px);letter-spacing:-.02em;line-height:1.02;}
+  .contact-title .hl{color:var(--cyan);}
+  .contact-sub{margin-top:26px;color:var(--muted);font-size:16px;max-width:520px;}
+  .contact-links{margin-top:52px;display:flex;gap:44px;flex-wrap:wrap;}
+  .contact-links a{font-family:var(--font-mono);font-size:13px;letter-spacing:.05em;text-transform:uppercase;color:var(--ink);border-bottom:1px solid var(--line);padding-bottom:6px;transition:border-color .3s,color .3s;}
+  .contact-links a:hover{border-color:var(--cyan);color:var(--cyan);}
+  footer{padding:44px 0 44px 64px;border-top:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;font-family:var(--font-mono);font-size:11px;color:var(--muted);letter-spacing:.05em;}
+  @media(max-width:768px){footer{padding-left:22px;flex-direction:column;gap:12px;align-items:flex-start;}}
+
+  .glow-bg{position:absolute;width:600px;height:600px;background:radial-gradient(circle,rgba(108,111,240,.13),transparent 70%);border-radius:50%;pointer-events:none;filter:blur(40px);}
+</style>
+</head>
+<body>
+
+<div id="cursor"></div>
+
+<div id="loader">
+  <div class="lw">Initializing signal</div>
+  <div class="lpct" id="loaderPct">00%</div>
+  <div class="lbar"><div class="lfill" id="loaderFill"></div></div>
+</div>
+
+<div id="pulse-wrap">
+  <svg viewBox="0 0 64 1200" preserveAspectRatio="none">
+    <defs>
+      <linearGradient id="pulseGrad" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0%" stop-color="#6C6FF0"/>
+        <stop offset="100%" stop-color="#43E6D0"/>
+      </linearGradient>
+    </defs>
+    <path id="pulse-path" d="M32,0 L32,1200"></path>
+    <path id="pulse-progress" d="M32,0 L32,1200" stroke-dasharray="1200" stroke-dashoffset="1200"></path>
+  </svg>
+</div>
+
+<nav>
+  <div class="logo">S. LINGAM</div>
+  <div class="navlinks">
+    <a href="#about">About</a>
+    <a href="#experience">Experience</a>
+    <a href="#work">Work</a>
+    <a href="#contact">Contact</a>
+  </div>
+</nav>
+
+<section id="hero">
+  <canvas id="noise-canvas"></canvas>
+  <div class="container">
+    <div class="eyebrow">Paid Social Analyst — EMEA Performance</div>
+    <h1 class="hero-line big"><span>I don't run ads.</span></h1>
+    <h1 class="hero-line big muted"><span>I engineer attention.</span></h1>
+    <p class="hero-sub">Srikanth Lingam — four years turning ad spend into signal. Full-funnel paid social across Meta, LinkedIn, Snapchat, Pinterest and Reddit, built on pacing discipline and a pharmacy-trained obsession with data.</p>
+    <div class="hero-meta">
+      <div><div class="m-label">Managed spend</div><div class="m-val">€800K+/yr</div></div>
+      <div><div class="m-label">ROAS lift</div><div class="m-val">+20%</div></div>
+      <div><div class="m-label">Client retention</div><div class="m-val">92%</div></div>
+    </div>
+  </div>
+  <div class="scroll-cue"><div class="sline"></div>Scroll</div>
+</section>
+
+<section id="about">
+  <div class="sec-head reveal">
+    <div class="sec-tag">01 — Who am I</div>
+    <h2 class="sec-title">From the pharmacy bench to the media dashboard.</h2>
+  </div>
+  <div class="about-grid">
+    <div class="reveal">
+      <p>I spent four years training in pharmaceutical science before I ever touched an ads manager — <strong>a Bachelor of Pharmacy, 8.63 CGPA</strong>, built on controlled variables, protocol, and reading data for what it actually says rather than what you want it to say.</p>
+      <p>That discipline is the whole reason paid social clicked for me. A campaign is just another system with inputs, variables and a measurable output. I moved into performance marketing to run that system at scale — <strong>full-funnel strategy across five platforms</strong>, managing budgets that don't forgive guesswork.</p>
+      <p>Today I sit inside Omnicom's global network handling <strong>12+ international and EMEA accounts</strong>, but the instinct hasn't changed: watch the signal, not the noise, and never let a campaign drift more than you can explain.</p>
+    </div>
+    <div class="pivot-card reveal">
+      <div class="pivot-label">The pivot, honestly</div>
+      <div class="pivot-title">Why a pharmacist runs paid media</div>
+      <p>Pharma taught me to distrust anecdotes and trust the protocol. Paid social rewarded that instinct immediately — pacing accuracy, statistical significance in creative testing, and reading a dashboard the way you'd read a lab result: calmly, and before you react. It's a stranger career path than most in this industry, and it's exactly why I optimize differently.</p>
+    </div>
+  </div>
+</section>
+
+<section id="experience">
+  <div class="sec-head reveal">
+    <div class="sec-tag">02 — Experience</div>
+    <h2 class="sec-title">Four years, two seats, one full-funnel discipline.</h2>
+  </div>
+
+  <div class="tl-row reveal">
+    <div class="tl-date">JUN 2025 — PRESENT</div>
+    <div>
+      <div class="tl-role">Social Analyst</div>
+      <div class="tl-co">Omnicom Global Solutions</div>
+      <ul class="tl-bullets">
+        <li>Own <b>12+</b> international and EMEA client accounts, directing <b>$150K+</b> in monthly full-funnel paid social spend from planning through execution.</li>
+        <li>Build and scale campaigns across Meta, LinkedIn, Snapchat, Pinterest and Reddit — lifting average ROAS by <b>20%</b> through advanced DPA and ACS tactics.</li>
+        <li>Hold budget pacing to within <b>±3%</b> of target through continuous QA and audience refinement — the number I'm proudest of.</li>
+        <li>Ship weekly, monthly, PCA and end-of-campaign reporting that helped drive a <b>92%</b> client retention rate, backed by <b>8+</b> automated Looker Studio and Power BI dashboards saving <b>6+ hrs/week</b>.</li>
+        <li>Partner across creative, account and analytics teams to align media strategy with business KPIs — contributing to an <b>18%</b> lift in conversion rates.</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="tl-row reveal">
+    <div class="tl-date">APR 2022 — JUN 2025</div>
+    <div>
+      <div class="tl-role">Paid Social Executive</div>
+      <div class="tl-co">GlobalTek ProSolutions Pvt Ltd</div>
+      <ul class="tl-bullets">
+        <li>Executed and optimized end-to-end paid social across Meta, LinkedIn and Snapchat for EMEA brands, streamlining account structures for maximum ROI/ROAS.</li>
+        <li>Turned raw performance data into weekly, monthly and annual reporting, mining KPIs that kept every account's profitability moving in one direction.</li>
+        <li>Engineered advanced Excel-based competitor deep-dives that became the backbone of high-value client conversations.</li>
+        <li>Managed live budget allocation and bidding strategy across channels, learning the pacing discipline that now defines how I run accounts today.</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<section id="platforms">
+  <div class="sec-head reveal">
+    <div class="sec-tag">03 — Platforms</div>
+    <h2 class="sec-title">Five platforms. One full-funnel logic.</h2>
+  </div>
+  <div class="plat-grid reveal">
+    <div class="plat-cell"><div class="p-name">Meta</div><div class="p-tag">Feed · Reels · DPA</div></div>
+    <div class="plat-cell"><div class="p-name">LinkedIn</div><div class="p-tag">B2B · ABM</div></div>
+    <div class="plat-cell"><div class="p-name">Snapchat</div><div class="p-tag">Gen Z reach</div></div>
+    <div class="plat-cell"><div class="p-name">Pinterest</div><div class="p-tag">Intent capture</div></div>
+    <div class="plat-cell"><div class="p-name">Reddit</div><div class="p-tag">Community-led</div></div>
+  </div>
+</section>
+
+<section id="skills">
+  <div class="sec-head reveal">
+    <div class="sec-tag">04 — Tooling</div>
+    <h2 class="sec-title">The stack behind the strategy.</h2>
+    <p class="sec-desc">No progress bars — competence here shows up in the work, not a percentage I made up.</p>
+  </div>
+  <div class="skill-groups" style="padding-left:64px;">
+    <div class="reveal">
+      <div class="skill-group-label">Media buying</div>
+      <div class="skill-tags">
+        <div class="skill-tag">Meta Ads Manager</div>
+        <div class="skill-tag">LinkedIn Campaign Manager</div>
+        <div class="skill-tag">Snapchat Ads Manager</div>
+        <div class="skill-tag">Pinterest Ads Manager</div>
+        <div class="skill-tag">Reddit Ads</div>
+        <div class="skill-tag">DPA / Dynamic Creative</div>
+        <div class="skill-tag">ACS</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-label">Analytics &amp; reporting</div>
+      <div class="skill-tags">
+        <div class="skill-tag">Looker Studio</div>
+        <div class="skill-tag">Power BI</div>
+        <div class="skill-tag">Advanced Excel</div>
+        <div class="skill-tag">Budget Pacing Models</div>
+        <div class="skill-tag">Competitor Deep-Dives</div>
+      </div>
+    </div>
+    <div class="reveal">
+      <div class="skill-group-label">Operating principles</div>
+      <div class="skill-tags">
+        <div class="skill-tag">Full-funnel strategy</div>
+        <div class="skill-tag">Cross-functional collaboration</div>
+        <div class="skill-tag">Client-facing reporting</div>
+        <div class="skill-tag">Multi-market / EMEA</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="philosophy">
+  <div class="glow-bg" style="top:10%;right:-200px;"></div>
+  <div class="phil-quote reveal">Every account is a <span class="hl">signal problem</span> before it's a creative problem. Find the drift, explain the drift, fix the drift.</div>
+  <div class="phil-grid">
+    <div class="phil-card reveal"><div class="num">01</div><h4>Pace before you push</h4><p>A campaign that overspends by 15% isn't optimizing — it's guessing. Pacing discipline is the first KPI, not the last.</p></div>
+    <div class="phil-card reveal"><div class="num">02</div><h4>Report what changes decisions</h4><p>Dashboards exist to move a client's next choice, not to prove activity. If a metric doesn't change a decision, it doesn't make the report.</p></div>
+    <div class="phil-card reveal"><div class="num">03</div><h4>Cross-functional by default</h4><p>Media, creative and analytics are one system. The best ROAS gains I've shipped came from a conversation, not a bid adjustment.</p></div>
+  </div>
+</section>
+
+<section id="work">
+  <div class="sec-head reveal">
+    <div class="sec-tag">05 — Selected work</div>
+    <h2 class="sec-title">Case study &amp; concept work.</h2>
+    <p class="sec-desc">One case study grounded in my actual account work at Omnicom. The concept projects that follow are labeled clearly — original frameworks I built to think through problems I haven't yet had a live client for.</p>
+  </div>
+
+  <div class="cs-label-row reveal"><span class="badge real">Personal case study</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">EMEA multi-account portfolio · Omnicom Global Solutions</span></div>
+
+  <div class="reveal">
+    <div class="cs-block">
+      <div class="cs-stage">Problem</div>
+      <div class="cs-content"><h4>Reporting overhead was eating strategy time</h4><p>Twelve-plus EMEA accounts meant twelve-plus manual reporting cycles. Strategic thinking time was getting crowded out by pulling numbers.</p></div>
+    </div>
+    <div class="cs-block">
+      <div class="cs-stage">Strategy</div>
+      <div class="cs-content"><h4>Automate the pull, protect the analysis</h4><p>Built 8+ automated Looker Studio and Power BI dashboards feeding directly from platform data sources, standardized across account types so account leads could self-serve.</p></div>
+    </div>
+    <div class="cs-block">
+      <div class="cs-stage">Execution</div>
+      <div class="cs-content"><h4>Pacing QA + tiered reporting cadence</h4><p>Layered weekly pacing checks (±3% target) with monthly, PCA and end-of-campaign reports — each tier answering a different stakeholder question rather than repeating the same numbers.</p></div>
+    </div>
+    <div class="cs-block">
+      <div class="cs-stage">Result</div>
+      <div class="cs-content"><h4>Time back, trust up</h4><p>6+ hours per week returned to strategic work across the team, alongside a 92% client retention rate and an 18% lift in conversion rates from the freed-up optimization time.</p></div>
+    </div>
+  </div>
+
+  <div class="cs-kpis reveal">
+    <div class="kpi-cell"><div class="kpi-val">±3%</div><div class="kpi-lbl">Pacing accuracy</div></div>
+    <div class="kpi-cell"><div class="kpi-val">92%</div><div class="kpi-lbl">Client retention</div></div>
+    <div class="kpi-cell"><div class="kpi-val">6+ hrs</div><div class="kpi-lbl">Saved weekly</div></div>
+    <div class="kpi-cell"><div class="kpi-val">+18%</div><div class="kpi-lbl">Conversion lift</div></div>
+  </div>
+
+  <div class="cs-label-row reveal"><span class="badge concept">Concept project</span><span style="font-family:var(--font-mono);font-size:12px;color:var(--muted);">Original frameworks — not client work</span></div>
+
+  <div class="concept-grid reveal">
+    <div class="concept-card">
+      <span class="badge concept">Concept</span>
+      <h4>Meta Ads pacing simulator</h4>
+      <p>A self-directed build modeling how ±3% pacing accuracy compounds across a 90-day flight versus a loosely-managed account — designed to make the case for pacing discipline visually, to clients who only see the end-of-month number.</p>
+      <div class="cc-tags"><span>Budget modeling</span><span>Looker Studio</span></div>
+    </div>
+    <div class="concept-card">
+      <span class="badge concept">Concept</span>
+      <h4>Cross-platform creative testing framework</h4>
+      <p>A structured hypothesis-to-learning framework for running statistically meaningful creative tests across Meta, Snapchat and Pinterest simultaneously, without cannibalizing budget or signal between platforms.</p>
+      <div class="cc-tags"><span>A/B testing</span><span>Audience architecture</span></div>
+    </div>
+  </div>
+</section>
+
+<section id="certifications">
+  <div class="sec-head reveal">
+    <div class="sec-tag">06 — Certifications</div>
+    <h2 class="sec-title">Verified across every platform I run.</h2>
+  </div>
+  <div class="cert-list reveal">
+    <div class="cert-row"><div class="cname">Meta Certified Media Buying Professional</div><div class="cissuer">Meta</div></div>
+    <div class="cert-row"><div class="cname">Meta Certified Digital Marketing Associate</div><div class="cissuer">Meta</div></div>
+    <div class="cert-row"><div class="cname">Snapchat Essentials</div><div class="cissuer">Snap Inc.</div></div>
+    <div class="cert-row"><div class="cname">Pinterest Media Buyer Certification</div><div class="cissuer">Pinterest</div></div>
+    <div class="cert-row"><div class="cname">Pinterest Media Planner Certification</div><div class="cissuer">Pinterest</div></div>
+    <div class="cert-row"><div class="cname">Reddit Ads Fundamentals</div><div class="cissuer">Reddit</div></div>
+    <div class="cert-row"><div class="cname">Reddit Ads Boost Certification</div><div class="cissuer">Reddit</div></div>
+  </div>
+</section>
+
+<section id="contact">
+  <div class="glow-bg" style="bottom:-100px;left:20%;"></div>
+  <h2 class="contact-title reveal">Let's fix the <span class="hl">drift</span>.</h2>
+  <p class="contact-sub reveal">Open to Paid Social Specialist, Performance Marketing Specialist and Performance Marketing Manager roles — EMEA and international accounts especially welcome.</p>
+  <div class="contact-links reveal">
+    <a href="mailto:srikanthlingam97@gmail.com">Email</a>
+    <a href="https://www.linkedin.com/in/srikanthlingam97" target="_blank" rel="noopener">LinkedIn</a>
+    <a href="tel:+919182334457">+91 91823 34457</a>
+  </div>
+</section>
+
+<footer>
+  <div>© 2026 SRIKANTH LINGAM · TIRUPATI, INDIA</div>
+  <div>BUILT WITH INTENT</div>
+</footer>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/gsap.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
+<script>
+gsap.registerPlugin(ScrollTrigger);
+
+/* ---------------- loader ---------------- */
+const loaderFill = document.getElementById('loaderFill');
+const loaderPct = document.getElementById('loaderPct');
+let pct = 0;
+const loaderInterval = setInterval(()=>{
+  pct += Math.random()*18;
+  if(pct>=100){
+    pct=100;
+    clearInterval(loaderInterval);
+    loaderFill.style.width='100%';
+    loaderPct.textContent='100%';
+    gsap.to('#loader',{opacity:0,duration:0.8,delay:0.3,onComplete:()=>{
+      document.getElementById('loader').style.display='none';
+      playHero();
+    }});
+    return;
+  }
+  loaderFill.style.width=pct+'%';
+  loaderPct.textContent=Math.floor(pct).toString().padStart(2,'0')+'%';
+},160);
+
+/* ---------------- hero entrance ---------------- */
+function playHero(){
+  const tl = gsap.timeline();
+  tl.to('.hero-line.big:not(.muted) span',{y:'0%',duration:1,ease:'power4.out'})
+    .to('.hero-line.muted span',{y:'0%',duration:1,ease:'power4.out'},'-=0.75')
+    .to('.hero-sub',{opacity:1,duration:0.8},'-=0.4')
+    .to('.hero-meta',{opacity:1,duration:0.8},'-=0.5');
+}
+
+/* ---------------- custom cursor ---------------- */
+const cursor = document.getElementById('cursor');
+window.addEventListener('mousemove', e=>{
+  gsap.to(cursor,{x:e.clientX,y:e.clientY,duration:0.15});
+});
+document.querySelectorAll('a,.skill-tag,.plat-cell,.concept-card').forEach(el=>{
+  el.addEventListener('mouseenter',()=>cursor.classList.add('big'));
+  el.addEventListener('mouseleave',()=>cursor.classList.remove('big'));
+});
+
+/* ---------------- scroll reveal ---------------- */
+document.querySelectorAll('.reveal').forEach(el=>{
+  gsap.to(el,{
+    opacity:1,y:0,duration:0.9,ease:'power3.out',
+    scrollTrigger:{trigger:el,start:'top 85%'}
+  });
+});
+
+/* ---------------- pulse progress line ---------------- */
+const pulseProgress = document.getElementById('pulse-progress');
+const pathLength = 1200;
+window.addEventListener('scroll', ()=>{
+  const scrollTop = window.scrollY;
+  const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+  const ratio = Math.min(scrollTop/docHeight,1);
+  pulseProgress.style.strokeDashoffset = pathLength - (pathLength*ratio);
+});
+
+/* ---------------- noise / grain canvas on hero ---------------- */
+const canvas = document.getElementById('noise-canvas');
+const ctx = canvas.getContext('2d');
+function resizeCanvas(){canvas.width=window.innerWidth;canvas.height=window.innerHeight;}
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+const dots = [];
+for(let i=0;i<60;i++){
+  dots.push({
+    x:Math.random()*canvas.width,
+    y:Math.random()*canvas.height,
+    r:Math.random()*1.4+0.4,
+    vx:(Math.random()-0.5)*0.15,
+    vy:(Math.random()-0.5)*0.15,
+    o:Math.random()*0.5+0.15
+  });
+}
+function drawDots(){
+  ctx.clearRect(0,0,canvas.width,canvas.height);
+  dots.forEach(d=>{
+    d.x+=d.vx; d.y+=d.vy;
+    if(d.x<0)d.x=canvas.width; if(d.x>canvas.width)d.x=0;
+    if(d.y<0)d.y=canvas.height; if(d.y>canvas.height)d.y=0;
+    ctx.beginPath();
+    ctx.arc(d.x,d.y,d.r,0,Math.PI*2);
+    ctx.fillStyle=`rgba(108,111,240,${d.o})`;
+    ctx.fill();
+  });
+  requestAnimationFrame(drawDots);
+}
+drawDots();
+</script>
+</body>
+</html>
